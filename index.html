@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geopolitica - L'actualité internationale décryptée</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        
+        h1, h2, h3, .serif-font {
+            font-family: 'Merriweather', serif;
+        }
+
+        .modal {
+            transition: opacity 0.25s ease;
+        }
+        body.modal-active {
+            overflow-x: hidden;
+            overflow-y: hidden;
+        }
+    </style>
+</head>
+<body class="text-slate-800 flex flex-col min-h-screen">
+
+    <!-- En-tête / Header -->
+    <header class="bg-slate-900 text-white border-b-4 border-red-700 sticky top-0 z-40 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Barre supérieure -->
+            <div class="flex justify-between items-center py-2 text-xs border-b border-slate-800 text-slate-400">
+                <div class="flex items-center space-x-4">
+                    <span><i class="far me-1 fa-calendar-alt"></i> En continu</span>
+                    <span class="hidden md:inline">|</span>
+                    <span class="hidden md:inline text-red-400 font-semibold"><i class="fas fa-bolt me-1"></i> ÉDITION SPÉCIALE</span>
+                </div>
+                <div>
+                    <!-- Mention demandée -->
+                    <span class="bg-red-800 text-white px-2 py-1 rounded text-xs font-bold tracking-wide">Rubrique de l'EIT</span>
+                </div>
+            </div>
+
+            <!-- Titre Principal du Journal -->
+            <div class="py-6 text-center border-b border-slate-800">
+                <a href="#" onclick="filterCategory('all')" class="inline-block">
+                    <h1 class="text-4xl sm:text-6xl font-black tracking-tight text-white uppercase hover:text-slate-200 transition">
+                        GEOPOLITICA
+                    </h1>
+                </a>
+                <p class="text-sm sm:text-base text-slate-400 italic mt-1">L'actualité internationale décryptée par la jeunesse</p>
+            </div>
+
+            <!-- Navigation & Recherche -->
+            <div class="flex flex-col md:flex-row justify-between items-center py-3 gap-4">
+                <nav class="flex flex-wrap justify-center gap-2 sm:gap-6 text-sm font-medium">
+                    <button onclick="filterCategory('all')" class="nav-btn text-white hover:text-red-400 py-1 px-2 border-b-2 border-red-600 transition" data-cat="all">Toutes les Unes</button>
+                    <button onclick="filterCategory('usa-iran')" class="nav-btn text-slate-300 hover:text-red-400 py-1 px-2 border-b-2 border-transparent transition" data-cat="usa-iran">USA / Moyen-Orient</button>
+                    <button onclick="filterCategory('france')" class="nav-btn text-slate-300 hover:text-red-400 py-1 px-2 border-b-2 border-transparent transition" data-cat="france">France & Société</button>
+                    <button onclick="filterCategory('europe')" class="nav-btn text-slate-300 hover:text-red-400 py-1 px-2 border-b-2 border-transparent transition" data-cat="europe">Europe</button>
+                    <button onclick="filterCategory('climat')" class="nav-btn text-slate-300 hover:text-red-400 py-1 px-2 border-b-2 border-transparent transition" data-cat="climat">Climat & Économie</button>
+                </nav>
+                <div class="relative w-full md:w-64">
+                    <input type="text" id="searchInput" onkeyup="searchArticles()" placeholder="Rechercher un sujet..." class="w-full bg-slate-800 text-slate-200 text-sm rounded-full pl-9 pr-4 py-1.5 focus:outline-none focus:ring-2 focus:ring-red-600 border border-slate-700">
+                    <i class="fas fa-search absolute left-3 top-2.5 text-slate-500 text-xs"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Contenu Principal -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+
+        <!-- ARTICLE À LA UNE (Trump / Ormuz / Iran) -->
+        <section id="featured-section" class="mb-12 article-card" data-category="usa-iran">
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-slate-200 grid grid-cols-1 lg:grid-cols-12 hover:shadow-xl transition duration-300">
+                <div class="lg:col-span-7 relative min-h-[320px] lg:min-h-[450px] bg-slate-900">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Donald_Trump_official_portrait_2017.jpg/800px-Donald_Trump_official_portrait_2017.jpg" alt="Donald Trump" class="w-full h-full object-cover object-top opacity-90">
+                    <span class="absolute top-4 left-4 bg-red-700 text-white text-xs font-bold uppercase px-3 py-1 rounded shadow">À LA UNE</span>
+                </div>
+                <div class="lg:col-span-5 p-6 sm:p-8 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center text-xs text-red-700 font-semibold uppercase tracking-wider mb-2">
+                            <span>Tensions Géopolitiques</span>
+                            <span class="mx-2">•</span>
+                            <span>Moyen-Orient</span>
+                        </div>
+                        <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 leading-tight mb-4 hover:text-red-700 transition cursor-pointer" onclick="openModal('trump-iran')">
+                            Escalade dans le détroit d'Ormuz : Donald Trump hausse le ton face à Téhéran
+                        </h2>
+                        <p class="text-slate-600 text-sm sm:text-base leading-relaxed mb-6">
+                            Alors que la présence militaire américaine s'intensifie dans le Golfe Persique, le gouvernement iranien menace de bloquer le passage stratégique des pétroliers. Une crise qui fait planer le spectre d'une confrontation armée directe.
+                        </p>
+                    </div>
+                    <div class="flex items-center justify-between border-t border-slate-100 pt-4">
+                        <span class="text-xs text-slate-500"><i class="far fa-clock me-1"></i> Temps de lecture : 5 min</span>
+                        <button onclick="openModal('trump-iran')" class="bg-slate-900 hover:bg-red-700 text-white text-sm font-medium px-4 py-2 rounded transition flex items-center">
+                            Lire l'article <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- GRILLE D'ARTICLES SECONDAIRES -->
+        <h3 id="section-title" class="text-xl font-bold text-slate-900 mb-6 pb-2 border-b-2 border-slate-900 uppercase tracking-wide flex items-center">
+            <i class="fas fa-newspaper me-2 text-red-700"></i> Articles récents & Analyses
+        </h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="articles-grid">
+
+            <!-- ARTICLE 2 : RN & Le Voile (France) -->
+            <article class="article-card bg-white rounded-xl shadow border border-slate-200 overflow-hidden flex flex-col hover:shadow-lg transition" data-category="france">
+                <div class="h-48 bg-slate-200 relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=800&q=80" alt="Assemblée Nationale" class="w-full h-full object-cover">
+                    <span class="absolute top-3 left-3 bg-slate-900 text-white text-xs font-bold px-2.5 py-1 rounded">FRANCE</span>
+                </div>
+                <div class="p-5 flex-grow flex flex-col justify-between">
+                    <div>
+                        <div class="text-xs text-slate-500 mb-2">Politique Nationale • Débat Public</div>
+                        <h4 class="text-lg font-bold text-slate-900 mb-2 leading-snug hover:text-red-700 transition cursor-pointer" onclick="openModal('rn-voile')">
+                            Controverse sur l'interdiction du voile : La proposition de loi du RN ravive le débat à l'Assemblée
+                        </h4>
+                        <p class="text-slate-600 text-sm line-clamp-3 mb-4">
+                            Le Rassemblement National remet sur la table sa proposition d'interdire le port du voile dans l'espace public. Une initiative qui suscite de vives oppositions au sein de l'hémicycle et de la société civile.
+                        </p>
+                    </div>
+                    <div class="flex items-center justify-between border-t border-slate-100 pt-3 mt-auto">
+                        <span class="text-xs text-slate-500">4 min de lecture</span>
+                        <button onclick="openModal('rn-voile')" class="text-red-700 hover:text-slate-900 text-sm font-semibold flex items-center">
+                            En savoir plus <i class="fas fa-chevron-right ml-1 text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- ARTICLE 3 : Europe & Montée des populismes -->
+            <article class="article-card bg-white rounded-xl shadow border border-slate-200 overflow-hidden flex flex-col hover:shadow-lg transition" data-category="europe">
+                <div class="h-48 bg-slate-200 relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&w=800&q=80" alt="Union Européenne" class="w-full h-full object-cover">
+                    <span class="absolute top-3 left-3 bg-blue-800 text-white text-xs font-bold px-2.5 py-1 rounded">EUROPE</span>
+                </div>
+                <div class="p-5 flex-grow flex flex-col justify-between">
+                    <div>
+                        <div class="text-xs text-slate-500 mb-2">Union Européenne • Élections</div>
+                        <h4 class="text-lg font-bold text-slate-900 mb-2 leading-snug hover:text-red-700 transition cursor-pointer" onclick="openModal('europe-elections')">
+                            Recomposition politique en Europe : L'Union face au défi de la souveraineté
+                        </h4>
+                        <p class="text-slate-600 text-sm line-clamp-3 mb-4">
+                            À l'approche des grands rendez-vous électoraux, les gouvernements européens tentent de concilier exigences de défense commune et montée des discours souverainistes.
+                        </p>
+                    </div>
+                    <div class="flex items-center justify-between border-t border-slate-100 pt-3 mt-auto">
+                        <span class="text-xs text-slate-500">6 min de lecture</span>
+                        <button onclick="openModal('europe-elections')" class="text-red-700 hover:text-slate-900 text-sm font-semibold flex items-center">
+                            En savoir plus <i class="fas fa-chevron-right ml-1 text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- ARTICLE 4 : Climat & Diplomatie internationale -->
+            <article class="article-card bg-white rounded-xl shadow border border-slate-200 overflow-hidden flex flex-col hover:shadow-lg transition" data-category="climat">
+                <div class="h-48 bg-slate-200 relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80" alt="Sommet du Climat" class="w-full h-full object-cover">
+                    <span class="absolute top-3 left-3 bg-emerald-800 text-white text-xs font-bold px-2.5 py-1 rounded">CLIMAT</span>
+                </div>
+                <div class="p-5 flex-grow flex flex-col justify-between">
+                    <div>
+                        <div class="text-xs text-slate-500 mb-2">Diplomatie • Écologie</div>
+                        <h4 class="text-lg font-bold text-slate-900 mb-2 leading-snug hover:text-red-700 transition cursor-pointer" onclick="openModal('climat-sommet')">
+                            Enjeux climatiques globaux : Vers des accords contraignants ?
+                        </h4>
+                        <p class="text-slate-600 text-sm line-clamp-3 mb-4">
+                            Les négociations climatiques mondiales piétinent face aux urgences économiques et énergétiques. Décryptage des blocages diplomatiques actuels.
+                        </p>
+                    </div>
+                    <div class="flex items-center justify-between border-t border-slate-100 pt-3 mt-auto">
+                        <span class="text-xs text-slate-500">5 min de lecture</span>
+                        <button onclick="openModal('climat-sommet')" class="text-red-700 hover:text-slate-900 text-sm font-semibold flex items-center">
+                            En savoir plus <i class="fas fa-chevron-right ml-1 text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+
+        <div id="no-results" class="hidden text-center py-12">
+            <i class="fas fa-search-minus text-4xl text-slate-400 mb-3"></i>
+            <p class="text-slate-600 font-medium">Aucun article ne correspond à votre recherche.</p>
+        </div>
+
+    </main>
+
+    <!-- Pied de page / Footer -->
+    <footer class="bg-slate-900 text-slate-400 border-t border-slate-800 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4 border-b border-slate-800 pb-6">
+                <div>
+                    <h2 class="text-2xl font-bold text-white uppercase tracking-tight">GEOPOLITICA</h2>
+                    <p class="text-xs text-slate-400 mt-1">Rubrique de l'EIT — Projet d'Analyse Politologique</p>
+                </div>
+                <div class="flex space-x-6 text-sm">
+                    <a href="#" class="hover:text-white transition">Mentions légales</a>
+                    <a href="#" class="hover:text-white transition">Charte déontologique</a>
+                    <a href="#" class="hover:text-white transition">Contact</a>
+                </div>
+            </div>
+            <div class="pt-6 text-center text-xs text-slate-500">
+                &copy; 2026 GEOPOLITICA. Tous droits réservés. Développé pour support d'exposé et présentation académique.
+            </div>
+        </div>
+    </footer>
+
+    <!-- FENÊTRES MODALES POUR LA LECTURE DES ARTICLES -->
+    <div id="modal-backdrop" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden opacity-0 transition-opacity duration-300 flex items-center justify-center p-4">
+        
+        <!-- Modal Contenu -->
+        <div id="modal-container" class="bg-white rounded-xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto transform scale-95 transition-transform duration-300 p-6 sm:p-8 relative">
+            
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 bg-slate-100 p-2 rounded-full transition">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+
+            <div id="modal-body">
+                <!-- Injection dynamique du texte -->
+            </div>
+            
+            <div class="mt-8 pt-4 border-t border-slate-200 flex justify-end">
+                <button onclick="closeModal()" class="bg-slate-800 hover:bg-slate-900 text-white text-sm font-medium px-5 py-2 rounded-lg transition">
+                    Fermer la lecture
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT INTERACTIF -->
+    <script>
+        // Données complètes des articles
+        const articlesData = {
+            'trump-iran': {
+                category: "USA / MOYEN-ORIENT",
+                title: "Escalade dans le détroit d'Ormuz : Donald Trump hausse le ton face à Téhéran",
+                date: "21 Septembre 2026",
+                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Donald_Trump_official_portrait_2017.jpg/800px-Donald_Trump_official_portrait_2017.jpg",
+                content: `
+                    <p class="text-lg font-medium text-slate-700 mb-4 italic">Le renforcement de la présence navale américaine dans les voies maritimes du Moyen-Orient attise de nouvelles tensions diplomatiques et sécuritaires mondiales.</p>
+                    <p class="mb-4">Le détroit d'Ormuz, passage stratégique par lequel transite près d'un cinquième du pétrole mondial, est une fois de plus au cœur d'une crise internationale majeure. Face aux récentes manœuvres militaires de la marine iranienne et à l'interception de pétroliers civils, Washington a ordonné le redéploiement d'un groupe aéronaval dans la région.</p>
+                    <p class="mb-4">Dans des déclarations récentes, Donald Trump a réaffirmé une posture d'extrême fermeté envers les dirigeants iraniens, exigeant l'arrêt immédiat de l'enrichissement d'uranium et la fin des actions d'intimidation maritime. Les alliés de l'OTAN appellent à la retenue pour éviter tout embrasement incontrôlé aux conséquences économiques mondiales désastreuses.</p>
+                    <p>Pour la communauté internationale, l'enjeu réside dans le maintien du droit maritime international tout en évitant une escalade militaire ouverte au Moyen-Orient.</p>
+                `
+            },
+            'rn-voile': {
+                category: "FRANCE & SOCIÉTÉ",
+                title: "Controverse sur l'interdiction du voile : La proposition de loi du RN ravive le débat à l'Assemblée",
+                date: "20 Septembre 2026",
+                image: "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=800&q=80",
+                content: `
+                    <p class="text-lg font-medium text-slate-700 mb-4 italic">La question de la laïcité et de la place des symboles religieux dans la sphère publique revient avec insistance au centre du débat parlementaire.</p>
+                    <p class="mb-4">La proposition de loi portée par le Rassemblement National visant à interdire le port de signes religieux ostensibles dans l'ensemble de l'espace public a suscité des échanges houleux lors des travaux en commission à l'Assemblée Nationale.</p>
+                    <p class="mb-4">Ses défenseurs mettent en avant une interprétation stricte des principes républicains et la défense des valeurs de la République. À l'opposé, les détracteurs du texte – qu'il s'agisse de membres de l'opposition ou d'associations juridiques – dénoncent une mesure jugée inconstitutionnelle et attentatoire aux libertés individuelles fondamentales.</p>
+                    <p>Ce débat intense reflète les clivages profonds qui traversent la société française autour des questions d'intégration, de liberté religieuse et de laïcité.</p>
+                `
+            },
+            'europe-elections': {
+                category: "EUROPE",
+                title: "Recomposition politique en Europe : L'Union face au défi de la souveraineté",
+                date: "19 Septembre 2026",
+                image: "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&w=800&q=80",
+                content: `
+                    <p class="text-lg font-medium text-slate-700 mb-4 italic">Entre volonté d'autonomie stratégique et émergence de partis souverainistes, l'Europe recherche son équilibre.</p>
+                    <p class="mb-4">Les récentes dynamiques politiques à travers plusieurs États membres montrent une percée continue des mouvements critiques à l'égard de l'intégration européenne traditionnelle. Les gouvernements en place tentent de trouver un équilibre entre le renforcement des compétences européennes en matière de défense et les demandes croissantes de protectionisme national.</p>
+                    <p>Les prochains sommets bruxellois devront répondre à la question essentielle du maintien de la cohésion de l'Union européenne dans un monde géopolitique de plus en plus multipolaire.</p>
+                `
+            },
+            'climat-sommet': {
+                category: "CLIMAT & ÉCONOMIE",
+                title: "Enjeux climatiques globaux : Vers des accords contraignants ?",
+                date: "18 Septembre 2026",
+                image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80",
+                content: `
+                    <p class="text-lg font-medium text-slate-700 mb-4 italic">Alors que les événements météorologiques extrêmes s'intensifient, la diplomatie environnementale fait face à des blocages économiques majeurs.</p>
+                    <p class="mb-4">Lors des consultations préalables aux négociations mondiales, les divergences s'accumulent entre grands pays émetteurs et nations vulnérables concernant la compensation financière des dommages écologiques et le financement de la transition énergétique.</p>
+                    <p>L'enjeu central demeure la capacité des grandes puissances à concilier leur souveraineté industrielle avec la fixation d'objectifs de décarbonation véritablement obligatoires.</p>
+                `
+            }
+        };
+
+        // Ouverture de la modale
+        function openModal(id) {
+            const data = articlesData[id];
+            if (!data) return;
+
+            const modalBody = document.getElementById('modal-body');
+            modalBody.innerHTML = `
+                <span class="text-xs font-bold text-red-700 tracking-wider uppercase">${data.category}</span>
+                <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 mt-1 mb-2 leading-tight">${data.title}</h2>
+                <div class="text-xs text-slate-400 mb-6"><i class="far fa-calendar me-1"></i> ${data.date}</div>
+                <img src="${data.image}" alt="Illustration" class="w-full h-64 object-cover rounded-lg mb-6 shadow-md">
+                <div class="prose max-w-none text-slate-700 leading-relaxed text-sm sm:text-base space-y-4">
+                    ${data.content}
+                </div>
+            `;
+
+            const backdrop = document.getElementById('modal-backdrop');
+            const container = document.getElementById('modal-container');
+            
+            backdrop.classList.remove('hidden');
+            setTimeout(() => {
+                backdrop.classList.remove('opacity-0');
+                container.classList.remove('scale-95');
+            }, 10);
+            document.body.classList.add('modal-active');
+        }
+
+        // Fermeture de la modale
+        function closeModal() {
+            const backdrop = document.getElementById('modal-backdrop');
+            const container = document.getElementById('modal-container');
+            
+            backdrop.classList.add('opacity-0');
+            container.classList.add('scale-95');
+            setTimeout(() => {
+                backdrop.classList.add('hidden');
+                document.body.classList.remove('modal-active');
+            }, 250);
+        }
+
+        // Filtre par catégorie
+        function filterCategory(cat) {
+            const cards = document.querySelectorAll('.article-card');
+            const featured = document.getElementById('featured-section');
+            const navBtns = document.querySelectorAll('.nav-btn');
+
+            navBtns.forEach(btn => {
+                if (btn.getAttribute('data-cat') === cat) {
+                    btn.classList.add('text-white', 'border-red-600');
+                    btn.classList.remove('text-slate-300', 'border-transparent');
+                } else {
+                    btn.classList.remove('text-white', 'border-red-600');
+                    btn.classList.add('text-slate-300', 'border-transparent');
+                }
+            });
+
+            cards.forEach(card => {
+                if (cat === 'all' || card.getAttribute('data-category') === cat) {
+                    card.style.display = "block";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        }
+
+        // Recherche dans les articles
+        function searchArticles() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.article-card');
+            let foundCount = 0;
+
+            cards.forEach(card => {
+                const text = card.innerText.toLowerCase();
+                if (text.includes(query)) {
+                    card.style.display = "block";
+                    foundCount++;
+                } else {
+                    card.style.display = "none";
+                }
+            });
+
+            const noResults = document.getElementById('no-results');
+            if (foundCount === 0) {
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
